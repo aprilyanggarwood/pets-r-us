@@ -2,6 +2,52 @@
 
 /* new */
 
+
+.topnav1 {
+  overflow: hidden;
+  background-color: burlywood;
+      padding: 20px 10px 5px 10px;
+  align-items: end;
+  
+  
+};
+
+.petTital{
+ text-decoration-line: none;
+
+}
+
+.topnav1 a{
+  float: left;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  font-size: 25px;
+   text-decoration-line: none;
+  
+}
+
+.topnav1 a:hover {
+  background-color: white;
+  color: blue;
+   text-decoration-line: none;
+}
+
+/* Create a right-aligned (split) link inside the navigation bar */
+.topnav1 a.split  {
+  float: right;
+  /* background-color: blue; */
+  color:black;
+  padding-right:10px;
+  padding-left:10px;
+  text-decoration-line: none;
+}
+
+
+.titlenav{
+  padding-bottom: 0px;
+}
+
 .bg-img {
   /* The image used */
   background-image: url("../images/background-img.jpg");
@@ -135,11 +181,141 @@ margin-left: 200px;;
 
 }
 
+/* Location hours */
+.rowhours {
+  display: flex;
+    /* justify-content:center; */
+    margin-top: 10px;
+    margin-bottom:30px;
+    margin-left:200px;
+}
+
 #card-container {
       /* background-color: var(--card-background-color); */
     /* Add shadows to cards. */
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
-    width: 600px;
+    width: 400px;
+    
+
+}
+
+.card-title {
+
+  text-align: center;
+      text-align: center;
+    padding: 20px 20px 10px 20px ;
+    font-family: auto;
+    font-weight: bold;
+    font-size: 1.5em;
+
+}
+
+ul {
+
+  list-style: none;
+    text-align: center;
+    margin-top: 0px;
+    padding-left: 0px;
+}
+
+.opentime {
+ padding:5px;
+font-family: auto;
+    font-size: 1rem;
+}
+
+.sunli{
+  padding-bottom:20px;
+}
+
+.location {
+/* margin-left: 150px; */
+    font-family: auto;
+   font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 5px
+    padding：15px;
+}
+
+
+#email{
+      padding-right: 100px;
+}
+
+#label{
+   font-size: 1.5rem
+}
+
+
+hr {
+    width: 500px;
+    height: 3px;
+    background-color: #e07e7b;
+    border: 0;
+    margin-bottom: 50px;
+}
+
+.quote {
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.5;
+    margin: 40px 0 25px;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 150px;
+}
+
+.grid {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.locations .grid li {
+    padding: 50px;
+    flex-basis: 50%;
+    text-align: center;
+}
+
+.locations .grid li {
+    padding: 50px;
+    flex-basis: 50%;
+    text-align: center;
+}
+
+.left-align{
+  padding-left: 30px;
+    text-align: left;
+}
+
+.locationtbellevue{
+      margin-top: 30px;
+    margin-bottom: 5px;
+}
+
+.address{
+  margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.contact{
+  margin-bottom: 5px;
+}
+
+.contactp{
+  margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.weekly-dog{
+ padding:20px;
+ background-color: lightgray;
 
 }
