@@ -1,7 +1,20 @@
+/* Title: styles.css
+  Author: April Yang
+  Date: 06/21/2022
+  Description: Styling for all HTML files. */
 
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
 
-/* new */
+html {
+  box-sizing: border-box;
+}
 
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 
 .topnav1 {
   overflow: hidden;
@@ -101,21 +114,6 @@ h1 {
     background-color:burlywood;
     margin: auto;
     padding: 20px;
-}
-
-/* new part 2 */
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
-}
-
-html {
-  box-sizing: border-box;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
 }
 
 .column {
@@ -264,11 +262,11 @@ hr {
     margin: 40px 0 25px;
 }
 
-section {
+.testimonials {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 50px 150px;
+    padding: 50px 150px 100px 150px;
 }
 
 .grid {
@@ -296,7 +294,7 @@ section {
 }
 
 .locationtbellevue{
-      margin-top: 30px;
+      margin-top: 10px;
     margin-bottom: 5px;
 }
 
@@ -328,12 +326,16 @@ section {
     width: 25%;
     border-radius: 50%;
     margin-left: 100px;
-
+  margin-top: 3px;
 }
 
 .dogInfo{
 margin-right: 100px;
-margin-left: 300px;
+margin-left: 400px;
+}
+
+.font{
+  font-size: 2rem;
 }
 
 .serviceTital {
@@ -367,4 +369,15 @@ margin-left: 300px;
     margin-right: 100px;
     margin-left: 400px;
 
+}
+
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: burlywood;
+   color: black;
+   text-align: center;
+  
 }
