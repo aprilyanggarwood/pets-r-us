@@ -317,5 +317,54 @@ section {
 .weekly-dog{
  padding:20px;
  background-color: lightgray;
+ width: 80%;
+ /* text-align: center; */
+ margin:auto;
+
+}
+
+.testDog{
+    float: left;
+    width: 25%;
+    border-radius: 50%;
+    margin-left: 100px;
+
+}
+
+.dogInfo{
+margin-right: 100px;
+margin-left: 300px;
+}
+
+.serviceTital {
+  padding-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* grooming page */
+
+#groomBtn{
+  text-align: center;
+}
+
+.groomButton{
+
+  border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 20px;
+    color: white;
+    background-color: black;
+    text-align: center;
+    cursor: pointer;
+    width: 40%;
+    text-align: center;
+    font-size: medium;
+}
+
+.groomPI{
+    margin-right: 100px;
+    margin-left: 400px;
 
 }
