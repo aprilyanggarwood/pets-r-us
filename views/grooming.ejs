@@ -13,25 +13,7 @@
     <title>Pets-R-Us</title>
   </head>
   <body>
-    <section class="topnav1">
-      <a href="/" class="petTital">Pets-R-Us</a>
-
-      <a href="" class="split">Log In</a>
-      <a href="" class="split">Sign Up</a>
-      <a class="active split" href="/" class="">Home</a>
-    </section>
-
-    <!-- ////////////////////// -->
-    <section class="bg-img">
-      <div class="containerbar">
-        <div class="topnav">
-          <button class="navbtn"><a href="/">Home</a></button>
-          <button class="navbtn"><a href="">Boarding</a></button>
-          <button class="navbtn"><a href="grooming.html">Grooming</a></button>
-          <button class="navbtn"><a href="">Training</a></button>
-        </div>
-      </div>
-    </section>
+    <header><%- include('./partials/header'); %></header>
 
     <!-- three cards  -->
     <section>
@@ -99,10 +81,6 @@
       <p class="author">- Tom Chen</p>
     </section>
 
-    <footer>
-      <div class="footer">
-        <p>&copy; Copyright April Yang</p>
-      </div>
-    </footer>
+    <footer class="footer"><%- include('./partials/footer'); %></footer>
   </body>
 </html>
