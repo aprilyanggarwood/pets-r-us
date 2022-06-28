@@ -27,8 +27,13 @@ app.get("/grooming", function (req, res) {
 });
 
 // training page
-// app.get("/training", function (req, res) {
-//   res.render("training");
+app.get("/training", function (req, res) {
+  res.render("training");
+});
+
+// Boarding page
+// app.get("/boarding", function (req, res) {
+//   res.render("boarding");
 // });
 
 // app.get("/", (req, res) => {

@@ -318,6 +318,7 @@ hr {
  width: 80%;
  /* text-align: center; */
  margin:auto;
+ margin-bottom: 70px;
 
 }
 
@@ -380,4 +381,54 @@ margin-left: 400px;
    color: black;
    text-align: center;
   
+}
+
+.trainDog {
+        float: left;
+    width: 25%;
+    border-radius: 50%;
+    /* margin-left: 100px; */
+    margin-top: -50px;
+    margin-left: 100px;
+    margin-right: 50px;
+}
+
+.grid {
+        width: 55%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card-titleTrain{
+  text-align: center;
+      text-align: center;
+    padding: 20px 20px 10px 320px ;
+    font-family: auto;
+    font-weight: bold;
+    font-size: 2em;
+
+
+}
+
+/* .cardTrain {
+  padding:0px 10px 10px 10px;
+  
+} */
+
+.p-10{
+  padding:5px;
+}
+
+.trainul{
+      padding: 0px 10px 0px 10px;
+}
+
+.trainers{
+ margin-bottom:150px;
+
+}
+
+.trainerimg{
+
+  height:300px;
 }
