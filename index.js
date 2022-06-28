@@ -32,9 +32,9 @@ app.get("/training", function (req, res) {
 });
 
 // Boarding page
-// app.get("/boarding", function (req, res) {
-//   res.render("boarding");
-// });
+app.get("/boarding", function (req, res) {
+  res.render("boarding");
+});
 
 // app.get("/", (req, res) => {
 //   res.sendFile(path.join(__dirname, "/views/index.html"));
@@ -52,7 +52,7 @@ app.get("/training", function (req, res) {
 //   res.send("Hello World!");
 // });
 
-// Listen on port 3000
+// Listen on port 3001
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });

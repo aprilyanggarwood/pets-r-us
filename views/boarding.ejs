@@ -1,0 +1,69 @@
+<!-- Title: grooming.html
+  Author: April Yang
+  Date: 06/28/2022
+  Description: Boarding page of Pets-R-Us site.  -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <title>Pets-R-Us</title>
+  </head>
+  <body>
+    <header><%- include('./partials/header'); %></header>
+    <section>
+      <h1 style="text-align: center">Boarding Service</h1>
+      <p class="companyinfo">
+        Lorem ipsum dolor sit amet quis dui ridiculus. Semper vulputate platea
+        auctor quisque aliquam ipsum leo hac turpis per. Sollicitudin ante amet
+        venenatis ridiculus consectetur finibus aenean viverra semper elit.
+        Sodales curabitur taciti justo penatibus nunc sociosqu mi sollicitudin.
+        Purus blandit est eu lobortis mauris lorem pulvinar. Vivamus integer dui
+        ac curabitur himenaeos sem. Lorem ipsum dolor sit amet quis dui
+        ridiculus. Semper vulputate platea auctor quisque aliquam ipsum leo hac
+        turpis per. Sollicitudin ante amet venenatis ridiculus consectetur
+        finibus aenean viverra semper elit. Sodales curabitur taciti justo
+        penatibus nunc sociosqu mi sollicitudin. Purus blandit est eu lobortis
+        mauris lorem pulvinar. Vivamus integer dui ac curabitur himenaeos sem.
+      </p>
+    </section>
+    <hr />
+
+    <!-- pricing card -->
+    <section>
+      <div>
+        <div class="card weekly-dog boardSec">
+          <div class="card-titleTrain">Pricing</div>
+          <div class="card-content">
+            <div>
+              <img src="./images/test-dog.jpg" class="trainDog" alt="" />
+            </div>
+            <div class="card cardBoard">
+              <div class="card-title"></div>
+              <div class="card-content">
+                <ul>
+                  <li class="p-10">1 dog up to 5 nights: $40/night</li>
+                  <li class="p-10">1 dog 5 nights or over: $35/night</li>
+                  <li class="p-10">2 dogs up to 5 nights: $65/night</li>
+                  <li class="p-10">2 dogs 5 nights or over: $60/night</li>
+                  <li class="p-10">3 dogs up to 5 nights: $90/night</li>
+                  <li class="p-10">3 dogs 5 nights or over: $75/night</li>
+                </ul>
+              </div>
+              <p id="boardBtn">
+                <button class="groomButton boardButton">
+                  Schedule a service
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer"><%- include('./partials/footer'); %></footer>
+  </body>
+</html>
