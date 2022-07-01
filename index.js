@@ -3,6 +3,26 @@ const path = require("path");
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3001;
+// const User = require("./models/user.js");
+const bodyParser = require("body-parser");
+const passport = require("passport");
+const localStrategy = require("passport-local");
+const session = require("express-session");
+const { authenticate } = require("passport");
+
+const conn =
+  "mongodb+srv://apriladmin:apriladmin@buwebdev-cluster-1.yfwec.mongodb.net/test";
+
+mongoose
+  .connect(conn)
+  .then(() => {
+    console.log("Connection to the database was successful");
+  })
+  .catch((err) => {
+    console.log("MongoDB Error: " + err.message);
+  });
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Static Files
 app.use(express.static("public"));
@@ -36,21 +56,45 @@ app.get("/boarding", function (req, res) {
   res.render("boarding");
 });
 
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "/views/index.html"));
-// });
+// Sign up page
+app.get("/sign-up", function (req, res) {
+  res.render("sign-up");
+});
 
-// app.get("/grooming", (req, res) => {
-//   res.sendFile(path.join(__dirname, "/views/grooming.html"));
-// });
+// Sign up page
+app.get("/log-in", function (req, res) {
+  res.render("log-in");
+});
 
-// app.get("/", (req, res) => {
-//   res.send("Hello World!");
-// });
+app.use(
+  session({
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
-// app.get("/groom.html", (req, res) => {
-//   res.send("Hello World!");
-// });
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new localStrategy(User, authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+User.register(
+  new User({ username: username, email: email }),
+  password,
+  function (err, user) {
+    if (err) {
+      console.log(err);
+      return res.redirect("./sign-up");
+    }
+
+    passport.Authenticator("local")(req, res, function () {
+      res.redirect("./sign-up");
+    });
+  }
+);
 
 // Listen on port 3001
 app.listen(PORT, () => {
