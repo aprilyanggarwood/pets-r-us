@@ -2,8 +2,9 @@
 const path = require("path");
 const express = require("express");
 const app = express();
+const mongoose = require("mongoose");
 const PORT = process.env.PORT || 3001;
-// const User = require("./models/user.js");
+const User = require("./models/user.js");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const localStrategy = require("passport-local");
@@ -97,6 +98,31 @@ User.register(
 );
 
 // Listen on port 3001
+// app.listen(PORT, () => {
+//   console.log(`Example app listening on port ${PORT}`);
+// });
+
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
+  User.find({}, function (err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("\n  --DISPLAYING USER LIST--");
+      for (let user of users) {
+        console.log(`  User username: ${user.username}`);
+      }
+
+      User.findOne({ username: "Rose" }, function (err, user) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("\n  --SELECTED USER--");
+          console.log(`  User name: ${user.username}`);
+
+          console.log("\n  Press Ctrl+C to stop the server...");
+        }
+      });
+    }
+  });
+  console.log("Application started and listening on PORT: " + PORT);
 });

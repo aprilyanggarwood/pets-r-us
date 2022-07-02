@@ -10,28 +10,49 @@
   <body>
     <!-- first nav bar -->
     <header><%- include('./partials/header'); %></header>
-    <div>
-      <h1>Sign Up</h1>
-      <form action="/sign-up">
-        <input
-          name="username"
-          type="text"
-          class="form-control"
-          placeholder="Username"
-          required
-          autofocus
-        />
-        <input
-          name="password"
-          type="password"
-          class="form-control"
-          placeholder="password"
-          required
-        />
-      </form>
-    </div>
-    <div>
-      <button>Sign up</button>
+    <div class="card-content">
+      <% if(users.length > 0) { %>
+      <div class="form">
+        <form action="/sign-up" method="post">
+          <div class="form-field">
+            <% users.forEach(function(user) { %>
+            <label for="username">Username</label><br />
+            <input
+              type="text"
+              class="input"
+              name="username"
+              id="username"
+              required
+              autofocus
+            />
+            <%= user.username %>
+          </div>
+          <% }) %> <% } else { %>
+          <h3>
+            User name has not been added to the MongoDB database. Try adding
+            some!
+          </h3>
+          <% } %>
+          <div class="form-field">
+            <label for="password">Password</label><br />
+            <input
+              type="password"
+              class="input"
+              name="password"
+              id="password"
+              required
+            />
+          </div>
+
+          <div class="form-field">
+            <input
+              type="submit"
+              value="Register"
+              class="btn btn-primary full-width"
+            />
+          </div>
+        </form>
+      </div>
     </div>
 
     <footer class="footer"><%- include('./partials/footer'); %></footer>
