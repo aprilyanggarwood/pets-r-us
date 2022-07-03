@@ -11,11 +11,9 @@
     <!-- first nav bar -->
     <header><%- include('./partials/header'); %></header>
     <div class="card-content">
-      <% if(users.length > 0) { %>
       <div class="form">
-        <form action="/sign-up" method="post">
+        <form action="/register" method="post">
           <div class="form-field">
-            <% users.forEach(function(user) { %>
             <label for="username">Username</label><br />
             <input
               type="text"
@@ -25,14 +23,18 @@
               required
               autofocus
             />
-            <%= user.username %>
           </div>
-          <% }) %> <% } else { %>
-          <h3>
-            User name has not been added to the MongoDB database. Try adding
-            some!
-          </h3>
-          <% } %>
+          <div class="form-field">
+            <label for="email">Email</label><br />
+            <input
+              type="text"
+              class="input"
+              name="email"
+              id="email"
+              required
+              autofocus
+            />
+          </div>
           <div class="form-field">
             <label for="password">Password</label><br />
             <input
@@ -49,12 +51,15 @@
               type="submit"
               value="Register"
               class="btn btn-primary full-width"
+              style="margin-bottom: 100px"
             />
           </div>
         </form>
       </div>
     </div>
 
-    <footer class="footer"><%- include('./partials/footer'); %></footer>
+    <footer style="margin-top: 50px" class="footer">
+      <%- include('./partials/footer'); %>
+    </footer>
   </body>
 </html>
