@@ -3,43 +3,26 @@ const path = require("path");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const User = require("./models/user.js");
+const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const session = require("express-session");
+// const moment = require("moment");
 
-const PORT = process.env.PORT || 3001;
-
-// mongoose.set("useNewUrlParser", true);
-// mongoose.set("useFindAndModify", false);
-// mongoose.set("useCreateIndex", true);
-// mongoose.set("useUnifiedTopology", true);
-const conn =
-  "mongodb+srv://apriladmin:apriladmin@buwebdev-cluster-1.yfwec.mongodb.net/web340DB";
-
-mongoose
-  .connect(conn)
-  .then(() => {
-    console.log("Connection to the database was successful");
-  })
-  .catch((err) => {
-    console.log("MongoDB Error: " + err.message);
-  });
+// mongoose model imports
+const User = require("./models/user.js");
 
 // set the view engine to ejs
 app.set("view engine", "ejs");
-
 app.use(bodyParser.urlencoded({ extended: true }));
-
 // Static Files
 app.use(express.static("public"));
-
 app.use("/styles", express.static(__dirname + "public/styles"));
-
 // app.use('/js', express.static(__dirname + 'public/js'))
 app.use("/images", express.static(__dirname + "public/images"));
+app.use(cookieParser());
 
 app.use(
   session({
@@ -55,6 +38,20 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+const PORT = process.env.PORT || 3001;
+const CONN =
+  "mongodb+srv://apriladmin:apriladmin@buwebdev-cluster-1.yfwec.mongodb.net/web340DB";
+// const message = " Welcome to the Pets-R-Us website"
+
+mongoose
+  .connect(CONN)
+  .then(() => {
+    console.log("Connection to the database was successful");
+  })
+  .catch((err) => {
+    console.log("MongoDB Error: " + err.message);
+  });
 
 // index page
 app.get("/", function (req, res) {
@@ -81,9 +78,19 @@ app.get("/register", function (req, res) {
   res.render("register");
 });
 
-// Sign up page
+// log in page
 app.get("/login", function (req, res) {
   res.render("log-in");
+});
+
+app.get("/register", (req, res) => {
+  User.find({}, function (err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("register", { users: users });
+    }
+  });
 });
 
 // Handling user signup
@@ -101,83 +108,33 @@ app.post("/register", function (req, res) {
     function (err, user) {
       if (err) {
         console.log(err);
-        return res.render("register");
+        return res.render("/register");
       }
 
       passport.authenticate("local")(req, res, function () {
-        res.render("secret");
+        res.redirect("/register");
       });
     }
   );
 });
 
-//Handling user login
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/secret",
-    failureRedirect: "/login",
-  }),
-  function (req, res) {}
-);
+app.post("/users", (req, res) => {
+  const userName = req.body.username;
+  const userEmail = req.body.email;
+  let user = new User({
+    username: userName,
+    email: userEmail,
+  });
 
-//Handling user logout
-app.get("/logout", function (req, res) {
-  req.logout();
-  res.redirect("/");
+  User.create(user, function (err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("/");
+    }
+  });
 });
 
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) return next();
-  res.redirect("/login");
-}
-
-var port = process.env.PORT || 3001;
-app.listen(port, function () {
+app.listen(PORT, function () {
   console.log("Server Has Started!");
 });
-
-// User.register(
-//   new User({ username: username, email: email }),
-//   password,
-//   function (err, user) {
-//     if (err) {
-//       console.log(err);
-//       return res.redirect("./sign-up");
-//     }
-
-//     passport.Authenticator("local")(req, res, function () {
-//       res.redirect("./sign-up");
-//     });
-//   }
-// );
-
-// Listen on port 3001
-// app.listen(PORT, () => {
-//   console.log(`Example app listening on port ${PORT}`);
-// });
-
-// app.listen(PORT, () => {
-//   User.find({}, function (err, users) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       console.log("\n  --DISPLAYING USER LIST--");
-//       for (let user of users) {
-//         console.log(`  User username: ${user.username}`);
-//       }
-
-//       User.findOne({ username: "Rose" }, function (err, user) {
-//         if (err) {
-//           console.log(err);
-//         } else {
-//           console.log("\n  --SELECTED USER--");
-//           console.log(`  User name: ${user.username}`);
-
-//           console.log("\n  Press Ctrl+C to stop the server...");
-//         }
-//       });
-//     }
-//   });
-//   console.log("Application started and listening on PORT: " + PORT);
-// });
