@@ -58,35 +58,6 @@
       </div>
     </section>
 
-    <section class="container">
-      <div class="card center-div">
-        <div class="card-title">User List</div>
-
-        <div class="card-content">
-          <% if(users.length > 0) { %>
-          <table class="table">
-            <tr>
-              <th>Username</th>
-              <th>Created at</th>
-            </tr>
-            <tbody>
-              <% users.forEach(function(user) { %>
-              <tr>
-                <td><%= user.username %></td>
-                <td><%= moment(user.createdAt).format('MM-DD-YYYY') %></td>
-              </tr>
-              <% }) %>
-            </tbody>
-          </table>
-          <% } else { %>
-          <h3>
-            Users have not been added to the MongoDB database. Try adding some!
-          </h3>
-          <% } %>
-        </div>
-      </div>
-    </section>
-
     <footer style="margin-top: 50px" class="footer">
       <%- include('./partials/footer'); %>
     </footer>
