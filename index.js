@@ -9,7 +9,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const session = require("express-session");
-// const moment = require("moment");
+const moment = require("moment");
 
 // mongoose model imports
 const User = require("./models/user.js");
@@ -85,16 +85,20 @@ app.get("/login", function (req, res) {
 
 app.get("/register", (req, res) => {
   User.find({}, function (err, users) {
+    console.log(users);
     if (err) {
       console.log(err);
     } else {
-      res.render("register", { users: users });
+      res.render("register", {
+        moment: moment,
+        users: users,
+      });
     }
   });
 });
 
 // Handling user signup
-app.post("/register", function (req, res) {
+app.post("/register", function (req, res, next) {
   let username = req.body.username;
   let password = req.body.password;
   let email = req.body.email;
@@ -118,19 +122,19 @@ app.post("/register", function (req, res) {
   );
 });
 
-app.post("/users", (req, res) => {
-  const userName = req.body.username;
-  const userEmail = req.body.email;
-  let user = new User({
+app.post("/register", (req, res) => {
+  const userName = req.body.userName;
+
+  console.log(req.body);
+  let postUser = new User({
     username: userName,
-    email: userEmail,
   });
 
-  User.create(user, function (err, users) {
+  User.create(postUser, function (err, postUser) {
     if (err) {
       console.log(err);
     } else {
-      res.redirect("/users", { users: users });
+      res.redirect("/");
     }
   });
 });
