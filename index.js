@@ -74,9 +74,9 @@ app.get("/boarding", function (req, res) {
 });
 
 // Sign up page
-app.get("/register", function (req, res) {
-  res.render("register");
-});
+// app.get("/register", function (req, res) {
+//   res.render("register");
+// });
 
 // log in page
 app.get("/login", function (req, res) {

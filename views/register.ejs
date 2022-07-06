@@ -70,7 +70,7 @@
               <th>Created at</th>
             </tr>
             <tbody>
-              <% user.forEach(function(user) { %>
+              <% users.forEach(function(user) { %>
               <tr>
                 <td><%= user.username %></td>
                 <td><%= moment(user.createdAt).format('MM-DD-YYYY') %></td>
