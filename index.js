@@ -10,6 +10,7 @@ const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const session = require("express-session");
 const moment = require("moment");
+const helmet = require("helmet");
 
 // mongoose model imports
 const User = require("./models/user.js");
@@ -17,12 +18,18 @@ const User = require("./models/user.js");
 // set the view engine to ejs
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+
 // Static Files
 app.use(express.static("public"));
 app.use("/styles", express.static(__dirname + "public/styles"));
 // app.use('/js', express.static(__dirname + 'public/js'))
 app.use("/images", express.static(__dirname + "public/images"));
 app.use(cookieParser());
+app.use(express.json());
+app.use(helmet.xssFilter());
+const csurf = require("csurf");
+
+const csurfProtection = csurf({ cookie: true });
 
 app.use(
   session({
@@ -78,6 +85,13 @@ app.get("/boarding", function (req, res) {
 //   res.render("register");
 // });
 
+// app.use((req, res, next) => {
+//   const token = req.csrfToken();
+//   res.cookie("XSRF-TOKEN", token);
+//   res.locals.csrfToken = token;
+//   next();
+// });
+
 // log in page
 app.get("/login", function (req, res) {
   res.render("login");
@@ -92,6 +106,7 @@ app.get("/register", (req, res) => {
       res.render("register", {
         moment: moment,
         users: users,
+        // cardTitle: "Registration Form"
       });
     }
   });
@@ -115,14 +130,15 @@ app.post("/register", function (req, res, next) {
         return res.render("/register");
       }
 
-      passport.authenticate("local")(req, res, function () {
-        res.redirect("/register");
-      });
+      // passport.authenticate("local")(req, res, function () {
+      //   res.redirect("/register");
+      // });
     }
   );
 });
 
 app.post("/register", (req, res) => {
+  // console.log(`\n  CSRF protected value: ${req.body.userName}`);
   const userName = req.body.userName;
 
   console.log(req.body);
@@ -138,6 +154,24 @@ app.post("/register", (req, res) => {
     }
   });
 });
+
+// function currentUser(name) {
+//   let currUser = postUser
+// }
+
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  }),
+  function (req, res) {}
+);
+
+// app.get("/logout", (req, res) => {
+//   req.logout();
+//   res.redirect("/");
+// });
 
 app.listen(PORT, function () {
   console.log("Server Has Started!");

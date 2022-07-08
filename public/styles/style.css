@@ -501,3 +501,49 @@ text-align: center;
 .dropdown:hover .dropdown-content {display: block;}
 
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+/* register page */
+
+.signUpContainer{
+padding: 20px 16px;
+    width: 60%;
+    text-align: center;
+   margin: 50px auto 50px auto;
+   
+   
+}
+
+.inputSignUp{
+      width: 60%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
+.labelSignUp{
+  padding:20px;
+}
+
+.signUpContent{
+  /* margin-top:20px; */
+  background-color: lightgray;
+  padding-top:20px;
+}
+
+.btnR{
+    margin-bottom: 100px;
+    width: 60%;
+    background-color: black;
+    color: white;
+    font-size: large;
+    padding: 10px;
+    margin-top: 10px;
+
+}
+
+table, th, td {
+  border: 1px solid;
+  margin:auto;
+  padding:10px;
+}
