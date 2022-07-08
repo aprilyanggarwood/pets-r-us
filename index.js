@@ -144,9 +144,9 @@ app.post("/register", function (req, res, next) {
         return res.render("/register");
       }
 
-      // passport.authenticate("local")(req, res, function () {
-      //   res.redirect("/register");
-      // });
+      passport.authenticate("local")(req, res, function () {
+        res.redirect("/");
+      });
     }
   );
 });
@@ -171,14 +171,25 @@ app.post("/register", (req, res) => {
 });
 
 // verified log in user by passport library
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-  }),
-  function (req, res) {}
-);
+app.post("/login", (req, res) => {
+  const userName = req.body.userName;
+  User.findOne({ username: userName }, function (error, currentUser) {
+    console.log(currentUser);
+    if (error) {
+      return next(error);
+    }
+
+    if (currentUser) {
+      req.flash("success", "User already exists");
+      return res.redirect("/");
+    }
+
+    passport.authenticate("local", {
+      successRedirect: "/",
+      failureRedirect: "/login",
+    });
+  });
+});
 
 // app.get("/logout", (req, res) => {
 //   req.logout();
