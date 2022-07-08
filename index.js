@@ -1,3 +1,10 @@
+/*
+  Title: Project Assignment - Pets-R-Us
+  Author: April Yang
+  Date: 06/18/2022
+  Description: Node.js, express, and mongoDB application
+*/
+
 // Import
 const path = require("path");
 const express = require("express");
@@ -15,8 +22,14 @@ const helmet = require("helmet");
 // mongoose model imports
 const User = require("./models/user.js");
 
+// set the view engine to html
+app.engine(".html", require("ejs").__express);
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "html");
+
 // set the view engine to ejs
-app.set("view engine", "ejs");
+// app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Static Files
@@ -51,6 +64,7 @@ const CONN =
   "mongodb+srv://apriladmin:apriladmin@buwebdev-cluster-1.yfwec.mongodb.net/web340DB";
 // const message = " Welcome to the Pets-R-Us website"
 
+// connect to mongoDB atlas
 mongoose
   .connect(CONN)
   .then(() => {
@@ -97,6 +111,7 @@ app.get("/login", function (req, res) {
   res.render("login");
 });
 
+// find user function
 app.get("/register", (req, res) => {
   User.find({}, function (err, users) {
     console.log(users);
@@ -106,13 +121,12 @@ app.get("/register", (req, res) => {
       res.render("register", {
         moment: moment,
         users: users,
-        // cardTitle: "Registration Form"
       });
     }
   });
 });
 
-// Handling user signup
+// handling user signup with username, email, and password
 app.post("/register", function (req, res, next) {
   let username = req.body.username;
   let password = req.body.password;
@@ -137,6 +151,7 @@ app.post("/register", function (req, res, next) {
   );
 });
 
+// creates a new user
 app.post("/register", (req, res) => {
   // console.log(`\n  CSRF protected value: ${req.body.userName}`);
   const userName = req.body.userName;
@@ -155,10 +170,7 @@ app.post("/register", (req, res) => {
   });
 });
 
-// function currentUser(name) {
-//   let currUser = postUser
-// }
-
+// verified log in user by passport library
 app.post(
   "/login",
   passport.authenticate("local", {
@@ -173,6 +185,7 @@ app.post(
 //   res.redirect("/");
 // });
 
+// wire up server
 app.listen(PORT, function () {
   console.log("Server Has Started!");
 });

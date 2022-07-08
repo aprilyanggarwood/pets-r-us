@@ -8,16 +8,14 @@
     <title>Pets-R-Us</title>
   </head>
   <body>
-    <!-- first nav bar -->
+    <!-- import navbar and header -->
     <navbar><%- include('./partials/navbar'); %></navbar>
     <header><%- include('./partials/header'); %></header>
-
+    <!-- sign up card with form -->
     <section class="container signUpContainer">
       <div class="card">
         <h1 class="card-title">Sign Up</h1>
-
         <div class="card-content signUpContent">
-          <!-- <div class="cardText"> -->
           <div class="form">
             <form action="/register" method="post">
               <div class="form-field">
@@ -63,16 +61,17 @@
               </div>
             </form>
           </div>
-          <!-- </div> -->
         </div>
       </div>
     </section>
 
+    <!-- display user list after user sign up  -->
     <section class="container signUpContainer" style="margin-bottom: 300px">
       <div class="card center-div">
         <h1 class="card-title">User List</h1>
 
         <div class="card-content signUpContent">
+          <!-- loop over every user sign in with username, email, and createdAt -->
           <% if(users.length > 0) { %>
           <table class="table">
             <tr>

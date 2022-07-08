@@ -1,3 +1,8 @@
+<!-- Title: login.html
+  Author: April Yang
+  Date: 07/07/2022
+  Description: login page of Pets-R-Us site.  -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,16 +13,16 @@
     <title>Pets-R-Us</title>
   </head>
   <body>
-    <!-- first nav bar -->
+    <!-- import navbar and header -->
     <navbar><%- include('./partials/navbar'); %></navbar>
     <header><%- include('./partials/header'); %></header>
 
+    <!-- login card with form -->
     <section class="container signUpContainer">
       <div class="card">
         <h1 class="card-title">Log In</h1>
 
         <div class="card-content signUpContent">
-          <!-- <div class="cardText"> -->
           <div class="form">
             <form action="/register" method="post">
               <div class="form-field">
@@ -52,7 +57,6 @@
               </div>
             </form>
           </div>
-          <!-- </div> -->
         </div>
       </div>
     </section>
