@@ -39,7 +39,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 const CONN =
   "mongodb+srv://apriladmin:apriladmin@buwebdev-cluster-1.yfwec.mongodb.net/web340DB";
 // const message = " Welcome to the Pets-R-Us website"
@@ -80,7 +80,7 @@ app.get("/boarding", function (req, res) {
 
 // log in page
 app.get("/login", function (req, res) {
-  res.render("log-in");
+  res.render("login");
 });
 
 app.get("/register", (req, res) => {

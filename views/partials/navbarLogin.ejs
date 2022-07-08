@@ -1,0 +1,24 @@
+
+
+<nav>
+  <div class="dropdown" style="float: right">
+    <button class="dropbtn">My Account</button>
+    <div class="dropdown-content">
+      <ul> 
+      <li><% if(currentUser) { %>
+            <a href="#">Hi <%= currentUser %></a>
+        <% } %>
+      </li>
+    <li><a href="/logout">Log Out</a></a></li>
+    <li><% if(!currentUser) { %>
+            <a href="register"></a>
+       
+      </li>
+    <li><a href="/login">Log In</a></a></li>
+      <!-- <li></li><a href="login">Log In</a></li> -->
+      <!-- <li></li><a href="#">Link 3</a></li>
+      <li></li><a href="#">Link 3</a></li> -->
+      </ul>
+    </div>
+  </div>
+  </nav>
