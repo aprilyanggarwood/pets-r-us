@@ -17,19 +17,20 @@ const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const session = require("express-session");
 const moment = require("moment");
-const helmet = require("helmet");
+// const helmet = require("helmet");
 
 // mongoose model imports
 const User = require("./models/user.js");
+const currentUser = require("./models/currentUser.js");
 
 // set the view engine to html
-app.engine(".html", require("ejs").__express);
+// app.engine(".html", require("ejs").__express);
 
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "html");
+// app.set("views", path.join(__dirname, "views"));
+// app.set("view engine", "html");
 
 // set the view engine to ejs
-// app.set("view engine", "ejs");
+app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Static Files
@@ -39,10 +40,10 @@ app.use("/styles", express.static(__dirname + "public/styles"));
 app.use("/images", express.static(__dirname + "public/images"));
 app.use(cookieParser());
 app.use(express.json());
-app.use(helmet.xssFilter());
-const csurf = require("csurf");
+// app.use(helmet.xssFilter());
+// const csurf = require("csurf");
 
-const csurfProtection = csurf({ cookie: true });
+// const csurfProtection = csurf({ cookie: true });
 
 app.use(
   session({
@@ -59,7 +60,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const CONN =
   "mongodb+srv://apriladmin:apriladmin@buwebdev-cluster-1.yfwec.mongodb.net/web340DB";
 // const message = " Welcome to the Pets-R-Us website"
@@ -73,6 +74,16 @@ mongoose
   .catch((err) => {
     console.log("MongoDB Error: " + err.message);
   });
+
+app.use((req, res, next) => {
+  if (req.session.passport) {
+    console.log(req.session.passport.user);
+    res.locals.currentUser = req.session.passport.user;
+  } else {
+    res.locals.currentUser = null;
+  }
+  next();
+});
 
 // index page
 app.get("/", function (req, res) {
@@ -94,27 +105,15 @@ app.get("/boarding", function (req, res) {
   res.render("boarding");
 });
 
-// Sign up page
-// app.get("/register", function (req, res) {
-//   res.render("register");
-// });
-
-// app.use((req, res, next) => {
-//   const token = req.csrfToken();
-//   res.cookie("XSRF-TOKEN", token);
-//   res.locals.csrfToken = token;
-//   next();
-// });
-
 // log in page
-app.get("/login", function (req, res) {
-  res.render("login");
-});
+// app.get("/login", function (req, res) {
+//   res.render("login");
+// });
 
 // find user function
 app.get("/register", (req, res) => {
   User.find({}, function (err, users) {
-    console.log(users);
+    // console.log(users);
     if (err) {
       console.log(err);
     } else {
@@ -145,56 +144,64 @@ app.post("/register", function (req, res, next) {
       }
 
       passport.authenticate("local")(req, res, function () {
-        res.redirect("/");
+        res.redirect("/register");
       });
     }
   );
 });
 
-// creates a new user
-app.post("/register", (req, res) => {
-  // console.log(`\n  CSRF protected value: ${req.body.userName}`);
-  const userName = req.body.userName;
+// log in a current user
 
-  console.log(req.body);
-  let postUser = new User({
-    username: userName,
-  });
-
-  User.create(postUser, function (err, postUser) {
+app.get("/login", (req, res) => {
+  currentUser.find({}, function (err, currentUsers) {
+    // console.log(currentUsers);
     if (err) {
       console.log(err);
     } else {
-      res.redirect("/");
+      res.render("/", {
+        currentUsers: currentUsers,
+      });
     }
   });
 });
 
-// verified log in user by passport library
-app.post("/login", (req, res) => {
-  const userName = req.body.userName;
-  User.findOne({ username: userName }, function (error, currentUser) {
-    console.log(currentUser);
-    if (error) {
-      return next(error);
-    }
+app.post("/login", function (req, res, next) {
+  let currentUserName = req.body.username;
+  let password = req.body.password;
 
-    if (currentUser) {
-      req.flash("success", "User already exists");
-      return res.redirect("/");
-    }
+  currentUser.login(
+    new currentUser({
+      currentUserName: currentUserName,
+    }),
+    password,
+    function (err, currentUser) {
+      if (err) {
+        console.log(err);
+        return res.render("/");
+      }
 
-    passport.authenticate("local", {
-      successRedirect: "/",
-      failureRedirect: "/login",
-    });
-  });
+      passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/login",
+      }),
+        function (req, res) {};
+    }
+  );
 });
 
-// app.get("/logout", (req, res) => {
-//   req.logout();
-//   res.redirect("/");
-// });
+// app.post(
+//   "/login",
+//   passport.authenticate("local", {
+//     successRedirect: "/",
+//     failureRedirect: "/login",
+//   }),
+//   function (req, res) {}
+// );
+
+app.get("/logout", (req, res) => {
+  req.logout();
+  res.redirect("/");
+});
 
 // wire up server
 app.listen(PORT, function () {
