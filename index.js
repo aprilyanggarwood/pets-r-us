@@ -21,7 +21,6 @@ const moment = require("moment");
 
 // mongoose model imports
 const User = require("./models/user.js");
-const currentUser = require("./models/currentUser.js");
 
 // set the view engine to html
 // app.engine(".html", require("ejs").__express);
@@ -118,6 +117,8 @@ app.get("/register", (req, res) => {
       console.log(err);
     } else {
       res.render("register", {
+        title: "Pets-R-Us: Register",
+        cardTitle: "Registration Form",
         moment: moment,
         users: users,
       });
@@ -150,54 +151,25 @@ app.post("/register", function (req, res, next) {
   );
 });
 
-// log in a current user
+// handle log in
 
 app.get("/login", (req, res) => {
-  currentUser.find({}, function (err, currentUsers) {
-    // console.log(currentUsers);
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("/", {
-        currentUsers: currentUsers,
-      });
-    }
+  res.render("login", {
+    title: "Pets-R-Us:Login",
+    cardTitle: "Login Form",
   });
 });
 
-app.post("/login", function (req, res, next) {
-  let currentUserName = req.body.username;
-  let password = req.body.password;
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  }),
+  function (req, res) {}
+);
 
-  currentUser.login(
-    new currentUser({
-      currentUserName: currentUserName,
-    }),
-    password,
-    function (err, currentUser) {
-      if (err) {
-        console.log(err);
-        return res.render("/");
-      }
-
-      passport.authenticate("local", {
-        successRedirect: "/",
-        failureRedirect: "/login",
-      }),
-        function (req, res) {};
-    }
-  );
-});
-
-// app.post(
-//   "/login",
-//   passport.authenticate("local", {
-//     successRedirect: "/",
-//     failureRedirect: "/login",
-//   }),
-//   function (req, res) {}
-// );
-
+// handle log out
 app.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/");
