@@ -17,6 +17,7 @@ const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const session = require("express-session");
 const moment = require("moment");
+
 // const helmet = require("helmet");
 
 // mongoose model imports
@@ -46,7 +47,7 @@ app.use(express.json());
 
 app.use(
   session({
-    secret: "secret",
+    secret: "s3cret",
     resave: true,
     saveUninitialized: true,
   })
@@ -54,12 +55,13 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(require("flash")());
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 const CONN =
   "mongodb+srv://apriladmin:apriladmin@buwebdev-cluster-1.yfwec.mongodb.net/web340DB";
 // const message = " Welcome to the Pets-R-Us website"
@@ -117,8 +119,8 @@ app.get("/register", (req, res) => {
       console.log(err);
     } else {
       res.render("register", {
-        title: "Pets-R-Us: Register",
-        cardTitle: "Registration Form",
+        title: "Pets-R-Us: Sign Up",
+        cardTitle: "Sign Up",
         moment: moment,
         users: users,
       });
@@ -155,8 +157,8 @@ app.post("/register", function (req, res, next) {
 
 app.get("/login", (req, res) => {
   res.render("login", {
-    title: "Pets-R-Us:Login",
-    cardTitle: "Login Form",
+    title: "Pets-R-Us: Log in",
+    cardTitle: "Log In",
   });
 });
 
@@ -169,11 +171,21 @@ app.post(
   function (req, res) {}
 );
 
-// handle log out
 app.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/");
 });
+
+// handle log out
+// app.get("/logout", function (req, res) {
+//   req.logout();
+// destroy session data
+// req.session.destroy();
+// clear the remember me cookie when logging out
+//   res.clearCookie("remember_me");
+//   req.flash("success", "Successfully logged out!");
+//   res.redirect("/");
+// });
 
 // wire up server
 app.listen(PORT, function () {
