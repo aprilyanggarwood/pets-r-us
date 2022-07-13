@@ -55,7 +55,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(require("flash")());
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -106,11 +105,6 @@ app.get("/boarding", function (req, res) {
   res.render("boarding");
 });
 
-// log in page
-// app.get("/login", function (req, res) {
-//   res.render("login");
-// });
-
 // find user function
 app.get("/register", (req, res) => {
   User.find({}, function (err, users) {
@@ -128,7 +122,7 @@ app.get("/register", (req, res) => {
   });
 });
 
-// handling user signup with username, email, and password
+// handling user signup with username, email, and password by passport
 app.post("/register", function (req, res, next) {
   let username = req.body.username;
   let password = req.body.password;
@@ -153,8 +147,7 @@ app.post("/register", function (req, res, next) {
   );
 });
 
-// handle log in
-
+// Get log in page
 app.get("/login", (req, res) => {
   res.render("login", {
     title: "Pets-R-Us: Log in",
@@ -162,6 +155,7 @@ app.get("/login", (req, res) => {
   });
 });
 
+// handle log in by passport
 app.post(
   "/login",
   passport.authenticate("local", {
@@ -171,21 +165,14 @@ app.post(
   function (req, res) {}
 );
 
-app.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect("/");
-});
+// log out user , route return to home
+app.get("/logout", (req, res, next) => {
+  req.logout(req.user, (err) => {
+    if (err) return next(err);
 
-// handle log out
-// app.get("/logout", function (req, res) {
-//   req.logout();
-// destroy session data
-// req.session.destroy();
-// clear the remember me cookie when logging out
-//   res.clearCookie("remember_me");
-//   req.flash("success", "Successfully logged out!");
-//   res.redirect("/");
-// });
+    res.redirect("/");
+  });
+});
 
 // wire up server
 app.listen(PORT, function () {

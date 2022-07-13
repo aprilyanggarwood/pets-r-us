@@ -6,7 +6,8 @@
  -->
 
 <!-- Dropdown button with list items -->
-
+<!--  When user register or log in to account, user name will appear in navbar -->
+<!-- When log out, user name will be log out, and route return to home -->
 <nav>
   <div class="dropdown" style="float: right">
     <button class="dropbtn">My Account</button>
@@ -14,10 +15,11 @@
       <ul>
         <% if(currentUser) { %>
 
+        <br />
         <li>Hi <%= currentUser %>!</li>
 
-        <li><a href="/">Logout</a></li>
-        <% } %><% if(!currentUser) { %>
+        <li><a href="/logout">Log Out</a></li>
+        <% } %> <% if(!currentUser) { %>
         <li><a href="/register">Sign Up</a></li>
         <li><a href="/login">Log In</a></li>
         <% } %>
