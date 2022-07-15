@@ -3,6 +3,7 @@
   Author: April Yang
   Date: 06/18/2022
   Description: Node.js, express, and mongoDB application
+  https://blog.jscrambler.com/setting-up-authentication-using-angular-node-and-passport
 */
 
 // Import
@@ -17,12 +18,14 @@ const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const session = require("express-session");
 const moment = require("moment");
+const flash = require("express-flash");
+const fs = require("fs");
 
 // const helmet = require("helmet");
 
 // mongoose model imports
 const User = require("./models/user.js");
-
+const Appointment = require("./models/appointments.js");
 // set the view engine to html
 // app.engine(".html", require("ejs").__express);
 
@@ -60,7 +63,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const CONN =
   "mongodb+srv://apriladmin:apriladmin@buwebdev-cluster-1.yfwec.mongodb.net/web340DB";
 // const message = " Welcome to the Pets-R-Us website"
@@ -108,13 +111,14 @@ app.get("/boarding", function (req, res) {
 // find user function
 app.get("/register", (req, res) => {
   User.find({}, function (err, users) {
-    // console.log(users);
+    console.log(users);
     if (err) {
       console.log(err);
     } else {
       res.render("register", {
         title: "Pets-R-Us: Sign Up",
         cardTitle: "Sign Up",
+
         moment: moment,
         users: users,
       });
@@ -172,6 +176,44 @@ app.get("/logout", (req, res, next) => {
 
     res.redirect("/");
   });
+});
+
+// appointment page
+app.get("/schedule", function (req, res) {
+  let servicesDataJsonFile = fs.readFileSync("./public/data/services.json");
+  let services = JSON.parse(servicesDataJsonFile);
+
+  res.render("schedule", {
+    title: "Pets-R-Us: schedule",
+    cardTitle: "Book your appointment",
+    services: services,
+  });
+});
+
+// check isLoggedIn
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    req.flash("error", "You needed to be logged in to visit that page!");
+    res.redirect("/");
+  }
+}
+
+app.get("/RouteGuard", isLoggedIn, (req, res) => {
+  res.render("index", { username: req.user.username });
+});
+
+app.post("/schedule", isLoggedIn, (req, res) => {
+  const newAppointment = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    service: req.body.service,
+  };
+
+  console.log(newAppointment);
+  res.redirect("/schedule");
 });
 
 // wire up server
