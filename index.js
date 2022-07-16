@@ -221,9 +221,20 @@ app.post("/schedule", isLoggedIn, (req, res, next) => {
     appointments.push(new Appointment())
   );
   res.redirect("/schedule");
-  // console.log(newAppointment);
-  // res.redirect("/schedule");
 });
+
+// app.post("/schedule", isLoggedIn, (req, res, next) => {
+//   const newAppointment = {
+//     firstName: req.body.firstName,
+//     lastName: req.body.lastName,
+//     email: req.body.email,
+//     service: req.body.service,
+//   };
+
+//   console.log(newAppointment);
+
+//   res.redirect("/schedule");
+// });
 
 // wire up server
 app.listen(PORT, function () {
