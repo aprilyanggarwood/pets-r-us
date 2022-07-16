@@ -18,7 +18,8 @@ const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 const session = require("express-session");
 const moment = require("moment");
-const flash = require("express-flash");
+// const flash = require("express-flash");
+const flash = require("connect-flash");
 const fs = require("fs");
 
 // const helmet = require("helmet");
@@ -63,7 +64,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 const CONN =
   "mongodb+srv://apriladmin:apriladmin@buwebdev-cluster-1.yfwec.mongodb.net/web340DB";
 // const message = " Welcome to the Pets-R-Us website"
@@ -178,7 +179,7 @@ app.get("/logout", (req, res, next) => {
   });
 });
 
-// appointment page
+// schedule appointment
 app.get("/schedule", function (req, res) {
   let servicesDataJsonFile = fs.readFileSync("./public/data/services.json");
   let services = JSON.parse(servicesDataJsonFile);
@@ -196,24 +197,32 @@ function isLoggedIn(req, res, next) {
     next();
   } else {
     req.flash("error", "You needed to be logged in to visit that page!");
-    res.redirect("/");
+    res.redirect("/login");
   }
 }
 
-app.get("/RouteGuard", isLoggedIn, (req, res) => {
-  res.render("index", { username: req.user.username });
+app.get("/schedule", isLoggedIn, (req, res) => {
+  res.render("/schedule", { username: req.user.username });
 });
 
-app.post("/schedule", isLoggedIn, (req, res) => {
-  const newAppointment = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    service: req.body.service,
-  };
-
-  console.log(newAppointment);
+app.post("/schedule", isLoggedIn, (req, res, next) => {
+  let firstName = req.body.firstName;
+  let lastName = req.body.lastName;
+  let email = req.body.email;
+  let service = req.body.service;
+  let appointments = [];
+  Appointment.schedule(
+    new Appointment({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      service: service,
+    }),
+    appointments.push(new Appointment())
+  );
   res.redirect("/schedule");
+  // console.log(newAppointment);
+  // res.redirect("/schedule");
 });
 
 // wire up server
