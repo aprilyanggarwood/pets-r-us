@@ -90,36 +90,6 @@
       </div>
     </section>
 
-    <!-- display the list of my appointments  -->
-    <section class="container signUpContainer" style="margin-bottom: 300px">
-      <div class="card center-div">
-        <h1 class="card-title">My Appointments</h1>
-
-        <div class="card-content signUpContent">
-          <!-- loop over every appointment with first name, last name, email , and service -->
-          <% if(appointments.length > 0) { %>
-          <table class="table">
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Service</th>
-            </tr>
-            <tbody>
-              <% appointments.forEach(function(appointment) { %>
-              <tr>
-                <td><%= appointment.firstName %></td>
-                <td><%= appointment.lastName %></td>
-                <td><%= appointment.email %></td>
-                <td><%= appointment.service %></td>
-              </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
     <footer class="footer"><%- include('./partials/footer'); %></footer>
   </body>
 </html>

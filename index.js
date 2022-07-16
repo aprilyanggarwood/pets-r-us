@@ -64,7 +64,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3000;
 const CONN =
   "mongodb+srv://apriladmin:apriladmin@buwebdev-cluster-1.yfwec.mongodb.net/web340DB";
 // const message = " Welcome to the Pets-R-Us website"
@@ -180,14 +180,21 @@ app.get("/logout", (req, res, next) => {
 });
 
 // schedule appointment
-app.get("/schedule", function (req, res) {
+app.get("/schedule", isLoggedIn, function (req, res) {
   let servicesDataJsonFile = fs.readFileSync("./public/data/services.json");
   let services = JSON.parse(servicesDataJsonFile);
 
-  res.render("schedule", {
-    title: "Pets-R-Us: schedule",
-    cardTitle: "Book your appointment",
-    services: services,
+  Appointment.find({}, function (err, appointments, users) {
+    console.log(appointments);
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("schedule", {
+        title: "Pets-R-Us: schedule",
+        cardTitle: "Book your appointment",
+        services: services,
+      });
+    }
   });
 });
 
@@ -196,45 +203,33 @@ function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     next();
   } else {
-    req.flash("error", "You needed to be logged in to visit that page!");
+    // req.flash("error", "You needed to be logged in to visit that page!");
     res.redirect("/login");
   }
 }
-
-app.get("/schedule", isLoggedIn, (req, res) => {
-  res.render("/schedule", { username: req.user.username });
-});
 
 app.post("/schedule", isLoggedIn, (req, res, next) => {
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
   let email = req.body.email;
   let service = req.body.service;
-  let appointments = [];
-  Appointment.schedule(
-    new Appointment({
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      service: service,
-    }),
-    appointments.push(new Appointment())
-  );
-  res.redirect("/schedule");
+  console.log(req.body);
+
+  let schedule = new Appointment({
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    service: service,
+  });
+
+  Appointment.create(schedule, function (err, schedule) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("./schedule");
+    }
+  });
 });
-
-// app.post("/schedule", isLoggedIn, (req, res, next) => {
-//   const newAppointment = {
-//     firstName: req.body.firstName,
-//     lastName: req.body.lastName,
-//     email: req.body.email,
-//     service: req.body.service,
-//   };
-
-//   console.log(newAppointment);
-
-//   res.redirect("/schedule");
-// });
 
 // wire up server
 app.listen(PORT, function () {
