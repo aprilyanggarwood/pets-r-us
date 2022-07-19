@@ -64,7 +64,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const CONN =
   "mongodb+srv://apriladmin:apriladmin@buwebdev-cluster-1.yfwec.mongodb.net/web340DB";
 // const message = " Welcome to the Pets-R-Us website"
@@ -193,6 +193,7 @@ app.get("/schedule", isLoggedIn, function (req, res) {
         title: "Pets-R-Us: schedule",
         cardTitle: "Book your appointment",
         services: services,
+        appointments: appointments,
       });
     }
   });
@@ -203,7 +204,7 @@ function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     next();
   } else {
-    // req.flash("error", "You needed to be logged in to visit that page!");
+    req.flash("error", "You needed to be logged in to visit that page!");
     res.redirect("/login");
   }
 }

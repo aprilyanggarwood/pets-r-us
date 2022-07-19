@@ -90,6 +90,41 @@
       </div>
     </section>
 
+    <!-- display user list after user sign up  -->
+    <section class="container signUpContainer" style="margin-bottom: 300px">
+      <div class="card center-div">
+        <h1 class="card-title">Appointments List</h1>
+
+        <div class="card-content signUpContent">
+          <!-- loop over every user sign in with username, email, and createdAt -->
+          <% if(appointments.length > 0) { %>
+          <table class="table">
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Service</th>
+            </tr>
+            <tbody>
+              <% appointments.forEach(function(appointment) { %>
+              <tr>
+                <td><%= appointment.firstName %></td>
+                <td><%= appointment.lastName %></td>
+                <td><%= appointment.email %></td>
+                <td><%= appointment.services %></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          <% } else { %>
+          <h3>
+            Users have not been added to the MongoDB database. Try adding some!
+          </h3>
+          <% } %>
+        </div>
+      </div>
+    </section>
+
     <footer class="footer"><%- include('./partials/footer'); %></footer>
   </body>
 </html>
