@@ -189,7 +189,7 @@ app.get("/schedule", isLoggedIn, function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      res.render("schedule", {
+      res.render("./schedule", {
         title: "Pets-R-Us: schedule",
         cardTitle: "Book your appointment",
         services: services,
@@ -212,14 +212,15 @@ app.post("/schedule", isLoggedIn, (req, res, next) => {
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
   let email = req.body.email;
-  let service = req.body.service;
+  let services = req.body.services;
+
   console.log(req.body);
 
   let schedule = new Appointment({
     firstName: firstName,
     lastName: lastName,
     email: email,
-    service: service,
+    services: services,
   });
 
   Appointment.create(schedule, function (err, schedule) {
