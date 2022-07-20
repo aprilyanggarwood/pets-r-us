@@ -235,12 +235,12 @@ app.post("/schedule", isLoggedIn, (req, res, next) => {
     if (err) {
       console.log(err);
     } else {
-      res.redirect("./api/profile");
+      res.redirect("./profile");
     }
   });
 });
 
-app.get("/api/profile", isLoggedIn, async (req, res) => {
+app.get("/api/appointments", isLoggedIn, async (req, res) => {
   Appointment.find({}, function (err, appointments) {
     if (err) {
       console.log(err);
@@ -250,12 +250,22 @@ app.get("/api/profile", isLoggedIn, async (req, res) => {
   });
 });
 
-app.get("/api/profile/:id", (req, res) => {
+app.get("/profile", isLoggedIn, async (req, res) => {
+  Appointment.find({}, function (err, appointments) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(appointments);
+    }
+  });
+});
+
+app.get("/profile/:id", (req, res) => {
   Appointment.findOne({ _id: req.params.id }, function (err, appointments) {
     if (err) {
       console.log(err);
     } else {
-      res.render("/api/profile", {
+      res.render("/profile", {
         title: "Pets-R-Us: profile",
         cardTitle: "My Profile",
         appointments: appointments,
