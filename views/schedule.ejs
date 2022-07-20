@@ -93,9 +93,15 @@
     <!-- display user list after user sign up  -->
     <section class="container signUpContainer" style="margin-bottom: 300px">
       <div class="card center-div">
-        <h1 class="card-title">Appointments List</h1>
 
-        <div class="card-content signUpContent">
+      <!-- <ul style="text-align:left; padding-left: 20px;">
+        <% if(currentUser) { %>
+        <br />
+        <li>User name:<%= currentUser %></li>   
+        <% } %>
+      </ul> -->
+      
+        <h1 class="card-title">Appointments List</h1>
           <!-- loop over every user sign in with username, email, and createdAt -->
           <% if(appointments.length > 0) { %>
           <table class="table">

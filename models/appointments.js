@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 // const passportLocalMongoose = require("passport-local-mongoose");
 
 const AppointmentsSchema = new mongoose.Schema({
-  /*   userName: { type: String, unique: true }, */
+  userName: { type: String, unique: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true, lowercase: true },

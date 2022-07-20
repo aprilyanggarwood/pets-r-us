@@ -21,12 +21,15 @@ const moment = require("moment");
 // const flash = require("express-flash");
 const flash = require("connect-flash");
 const fs = require("fs");
+const apiAppointments = require("./api/appointmentsApi.js");
 
 // const helmet = require("helmet");
 
 // mongoose model imports
 const User = require("./models/user.js");
 const Appointment = require("./models/appointments.js");
+
+app.use("/appointments", apiAppointments);
 // set the view engine to html
 // app.engine(".html", require("ejs").__express);
 
@@ -194,6 +197,7 @@ app.get("/schedule", isLoggedIn, function (req, res) {
         cardTitle: "Book your appointment",
         services: services,
         appointments: appointments,
+        // userName:userName
       });
     }
   });
@@ -204,7 +208,7 @@ function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     next();
   } else {
-    req.flash("error", "You needed to be logged in to visit that page!");
+    // req.flash("error", "You needed to be logged in to visit that page!");
     res.redirect("/login");
   }
 }
@@ -215,6 +219,8 @@ app.post("/schedule", isLoggedIn, (req, res, next) => {
   let email = req.body.email;
   let services = req.body.services;
 
+  // let userName = req.body.username;
+
   console.log(req.body);
 
   let schedule = new Appointment({
@@ -222,13 +228,38 @@ app.post("/schedule", isLoggedIn, (req, res, next) => {
     lastName: lastName,
     email: email,
     services: services,
+    // userName: userName,
   });
 
   Appointment.create(schedule, function (err, schedule) {
     if (err) {
       console.log(err);
     } else {
-      res.redirect("./schedule");
+      res.redirect("./api/profile");
+    }
+  });
+});
+
+app.get("/api/profile", isLoggedIn, async (req, res) => {
+  Appointment.find({}, function (err, appointments) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(appointments);
+    }
+  });
+});
+
+app.get("/api/profile/:id", (req, res) => {
+  Appointment.findOne({ _id: req.params.id }, function (err, appointments) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("/api/profile", {
+        title: "Pets-R-Us: profile",
+        cardTitle: "My Profile",
+        appointments: appointments,
+      });
     }
   });
 });
