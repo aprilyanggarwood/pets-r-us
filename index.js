@@ -21,7 +21,6 @@ const moment = require("moment");
 // const flash = require("express-flash");
 const flash = require("connect-flash");
 const fs = require("fs");
-const apiAppointments = require("./api/appointmentsApi.js");
 
 // const helmet = require("helmet");
 
@@ -29,7 +28,6 @@ const apiAppointments = require("./api/appointmentsApi.js");
 const User = require("./models/user.js");
 const Appointment = require("./models/appointments.js");
 
-app.use("/appointments", apiAppointments);
 // set the view engine to html
 // app.engine(".html", require("ejs").__express);
 
@@ -192,7 +190,7 @@ app.get("/schedule", isLoggedIn, function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      res.render("./schedule", {
+      res.render("schedule", {
         title: "Pets-R-Us: schedule",
         cardTitle: "Book your appointment",
         services: services,
@@ -242,6 +240,7 @@ app.post("/schedule", isLoggedIn, (req, res, next) => {
 
 app.get("/api/appointments", isLoggedIn, async (req, res) => {
   Appointment.find({}, function (err, appointments) {
+    console.log(appointments);
     if (err) {
       console.log(err);
     } else {
@@ -251,31 +250,14 @@ app.get("/api/appointments", isLoggedIn, async (req, res) => {
 });
 
 app.get("/profile", isLoggedIn, async (req, res) => {
-  let username = req.body.username;
+  let username = req.session.passport.user;
   let email = req.body.email;
-  Appointment.find({}, function (err, appointments) {
-    if (err) {
-      console.log(err);
-    } else {
-      // res.json(appointments);
-      res.render("profile", {
-        title: "Pets-R-Us: profile",
-        cardTitle: "My Profile",
-        appointments: appointments,
-        email: email,
-        username: username,
-      });
-    }
-  });
-});
-
-app.get("/profile/:id", (req, res) => {
-  let username = req.body.username;
-  let email = req.body.email;
+  res.locals.currentUser = username;
   Appointment.findOne({ _id: req.params.id }, function (err, appointments) {
     if (err) {
       console.log(err);
     } else {
+      // res.json(appointments);
       res.render("profile", {
         title: "Pets-R-Us: profile",
         cardTitle: "My Profile",
