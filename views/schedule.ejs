@@ -94,16 +94,16 @@
     <section class="container signUpContainer" style="margin-bottom: 300px">
       <div class="card center-div">
 
-      <!-- <ul style="text-align:left; padding-left: 20px;">
+      <ul style="text-align:left; padding-left: 20px;">
         <% if(currentUser) { %>
         <br />
         <li>User name:<%= currentUser %></li>   
         <% } %>
-      </ul> -->
+      </ul>
       
-        <h1 class="card-title">Appointments List</h1>
-          <!-- loop over every user sign in with username, email, and createdAt -->
-          <% if(appointments.length > 0) { %>
+      <!-- loop over every user sign in with username, email, and createdAt -->
+      <h1 class="card-title">Appointments List</h1>
+            <% if(appointments.length > 0) { %>
           <table class="table">
             <tr>
               <th>First Name</th>
@@ -127,6 +127,7 @@
             Users have not been added to the MongoDB database. Try adding some!
           </h3>
           <% } %>
+        
         </div>
       </div>
     </section>

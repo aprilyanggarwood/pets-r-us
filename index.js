@@ -251,24 +251,37 @@ app.get("/api/appointments", isLoggedIn, async (req, res) => {
 });
 
 app.get("/profile", isLoggedIn, async (req, res) => {
+  let username = req.body.username;
+  let email = req.body.email;
   Appointment.find({}, function (err, appointments) {
     if (err) {
       console.log(err);
     } else {
-      res.json(appointments);
+      // res.json(appointments);
+      res.render("profile", {
+        title: "Pets-R-Us: profile",
+        cardTitle: "My Profile",
+        appointments: appointments,
+        email: email,
+        username: username,
+      });
     }
   });
 });
 
 app.get("/profile/:id", (req, res) => {
+  let username = req.body.username;
+  let email = req.body.email;
   Appointment.findOne({ _id: req.params.id }, function (err, appointments) {
     if (err) {
       console.log(err);
     } else {
-      res.render("/profile", {
+      res.render("profile", {
         title: "Pets-R-Us: profile",
         cardTitle: "My Profile",
         appointments: appointments,
+        email: email,
+        username: username,
       });
     }
   });
