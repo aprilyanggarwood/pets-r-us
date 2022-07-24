@@ -16,7 +16,7 @@
     <!-- import navbar and header -->
     <navbar><%- include('./partials/navbar'); %></navbar>
     <header><%- include('./partials/header'); %></header>
-    <!-- sign up card with form -->
+    <!-- Schedule form  -->
     <section class="container signUpContainer">
       <div class="card">
         <h1 class="card-title"><%= cardTitle %></h1>
@@ -74,7 +74,7 @@
                   autofocus
                 />
               </div>
-
+                
               <div class="form-field">
                 <label for="services" class="labelSignUp">Services</label><br />
                 <select
@@ -104,10 +104,10 @@
       </div>
     </section>
 
-    <!-- display user list after user sign up  -->
+  
     <section class="container signUpContainer" style="margin-bottom: 300px">
       <div class="card center-div">
-
+    <!-- logged in user's name -->
       <ul style="text-align:left; padding-left: 20px;">
         <% if(currentUser) { %>
         <br />
@@ -115,7 +115,7 @@
         <% } %>
       </ul>
       
-      <!-- loop over every user sign in with username, email, and createdAt -->
+      <!--  -->
       <h1 class="card-title">Appointments List</h1>
             <% if(appointments.length > 0) { %>
           <table class="table">

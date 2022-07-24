@@ -3,7 +3,7 @@
   Author: April Yang
   Date: 06/18/2022
   Description: Node.js, express, and mongoDB application
-  https://blog.jscrambler.com/setting-up-authentication-using-angular-node-and-passport
+ 
 */
 
 // Import
@@ -23,6 +23,8 @@ const flash = require("connect-flash");
 const fs = require("fs");
 
 // const helmet = require("helmet");
+// const csurf = require("csurf");
+// const csurfProtection = csrf({ cookie: true });
 
 // mongoose model imports
 const User = require("./models/user.js");
@@ -45,11 +47,28 @@ app.use("/styles", express.static(__dirname + "public/styles"));
 app.use("/images", express.static(__dirname + "public/images"));
 app.use(cookieParser());
 app.use(express.json());
+
+//MiddleWare
+// app.use(
+//   bodyParser.urlencoded({
+//     extended: true,
+//   })
+// );
+// app.use(cookieParser());
+
+//CSRF
+// app.use(csurfProtection);
+// app.use((req, res, next) => {
+//   const token = req.csrfToken();
+//   res.cookie("XSRF-TOKEN", token);
+//   res.locals.csrfToken = token;
+//   next();
+// });
+
+//Helmet method that prevents cross-site scripting
 // app.use(helmet.xssFilter());
-// const csurf = require("csurf");
 
-// const csurfProtection = csurf({ cookie: true });
-
+//Passport
 app.use(
   session({
     secret: "s3cret",
@@ -80,6 +99,7 @@ mongoose
     console.log("MongoDB Error: " + err.message);
   });
 
+//Passport
 app.use((req, res, next) => {
   if (req.session.passport) {
     console.log(req.session.passport.user);
@@ -110,6 +130,7 @@ app.get("/boarding", function (req, res) {
   res.render("boarding");
 });
 
+// render sign up page
 // find user function
 app.get("/register", (req, res) => {
   User.find({}, function (err, users) {
@@ -180,6 +201,7 @@ app.get("/logout", (req, res, next) => {
   });
 });
 
+// render schedule page
 // schedule appointment
 app.get("/schedule", isLoggedIn, function (req, res) {
   let servicesDataJsonFile = fs.readFileSync("./public/data/services.json");
@@ -211,6 +233,7 @@ function isLoggedIn(req, res, next) {
   }
 }
 
+// schedule appointment with firstName, lastName, email, and services
 app.post("/schedule", isLoggedIn, (req, res, next) => {
   // const username = res.locals.currentUser;
   let firstName = req.body.firstName;
@@ -239,6 +262,7 @@ app.post("/schedule", isLoggedIn, (req, res, next) => {
   });
 });
 
+// find appointment data from json
 app.get("/api/appointments", isLoggedIn, async (req, res) => {
   Appointment.find({}, function (err, appointments) {
     console.log(appointments);
@@ -250,6 +274,7 @@ app.get("/api/appointments", isLoggedIn, async (req, res) => {
   });
 });
 
+// logged in user profile with appointments (still working on only showing logged in user's appointments)
 app.get("/profile", isLoggedIn, async (req, res) => {
   let username = req.session.passport.user;
   let email = req.body.email;
@@ -263,8 +288,8 @@ app.get("/profile", isLoggedIn, async (req, res) => {
         title: "Pets-R-Us: profile",
         cardTitle: "My Profile",
         appointments: appointments,
-        // email: email,
-        // username: username,
+        email: email,
+        username: username,
       });
     }
   });
