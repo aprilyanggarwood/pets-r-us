@@ -212,6 +212,7 @@ function isLoggedIn(req, res, next) {
 }
 
 app.post("/schedule", isLoggedIn, (req, res, next) => {
+  // const username = res.locals.currentUser;
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
   let email = req.body.email;
@@ -222,11 +223,11 @@ app.post("/schedule", isLoggedIn, (req, res, next) => {
   console.log(req.body);
 
   let schedule = new Appointment({
+    // userName: username,
     firstName: firstName,
     lastName: lastName,
     email: email,
     services: services,
-    // userName: userName,
   });
 
   Appointment.create(schedule, function (err, schedule) {
@@ -253,7 +254,7 @@ app.get("/profile", isLoggedIn, async (req, res) => {
   let username = req.session.passport.user;
   let email = req.body.email;
   res.locals.currentUser = username;
-  Appointment.findOne({ _id: req.params.id }, function (err, appointments) {
+  Appointment.findOne({ username: username }, function (err, appointments) {
     if (err) {
       console.log(err);
     } else {
@@ -262,8 +263,8 @@ app.get("/profile", isLoggedIn, async (req, res) => {
         title: "Pets-R-Us: profile",
         cardTitle: "My Profile",
         appointments: appointments,
-        email: email,
-        username: username,
+        // email: email,
+        // username: username,
       });
     }
   });
