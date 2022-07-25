@@ -21,14 +21,27 @@
       <div class="card">
         <h1 class="card-title"><%= cardTitle %></h1>
         <!-- logged in user name and email -->
-        <ul style="text-align: left; padding-left: 20px">
+        <!-- <ul style="text-align: left; padding-left: 20px">
           <% if(currentUser) { %>
           <br />
           <li>User name:<%= currentUser %></li>
           <li>User email:<%= currentUser.email %></li>
           <% } %>
-        </ul>
+        </ul> -->
 
+        <!-- <% if(currentUser) { %> -->
+        <!-- displaying logged in user name and user email -->
+
+        <ul style="margin-bottom: 0px; margin-top: 20px">
+          <li>User name: <%= currentUser %></li>
+          <li>User Email: <%= appointments.email %></li>
+          <!-- 
+          <%} else { %>
+
+          <li>User name: <%= currentUser %></li>
+          <li>User Email: <%= appointments.email %></li>
+          <% } %> -->
+        </ul>
         <!-- displaying logged in user's appointments  -->
         <div id="appointments"></div>
       </div>
@@ -38,7 +51,7 @@
       fetch("/api/appointments")
         .then((res) => res.json())
         .then((data) => {
-          let tableString = `<br /><h4 style="font-size: 32px; text-align: center; padding-bottom: 10px;">My Appointments</h4><table id="appointments" class="table"><tr><th>First name</th><th>Last name</th><th>Email</th><th>Service</th></tr>`;
+          let tableString = `<br /><h4 style="font-size: 32px; text-align: center; padding-bottom: 10px; margin-top:0px; margin-bottom:0px;">My Appointments</h4><table id="appointments" class="table"><tr><th>First name</th><th>Last name</th><th>Email</th><th>Service</th></tr>`;
           // loop over appointment with user's firstName, lastName, email, and services
           for (let appointment of data) {
             tableString += `<tr><td>${appointment.firstName}</td><td>${appointment.lastName}</td><td>${appointment.email}</td><td>${appointment.services}</td></tr>`;
