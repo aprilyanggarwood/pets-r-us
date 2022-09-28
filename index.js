@@ -103,7 +103,7 @@ mongoose
 app.use((req, res, next) => {
   if (req.session.passport) {
     console.log(req.session.passport.user);
-    res.locals.currentUser = req.session.passport.user;
+    res.locals.currentUser = req.session.passport.user; // current user from session passport local
   } else {
     res.locals.currentUser = null;
   }
@@ -207,20 +207,23 @@ app.get("/schedule", isLoggedIn, function (req, res) {
   let servicesDataJsonFile = fs.readFileSync("./public/data/services.json");
   let services = JSON.parse(servicesDataJsonFile);
 
-  Appointment.find({}, function (err, appointments, users) {
-    console.log(appointments);
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("schedule", {
-        title: "Pets-R-Us: schedule",
-        cardTitle: "Book your appointment",
-        services: services,
-        appointments: appointments,
-        // userName:userName
-      });
+  Appointment.find(
+    { userName: res.locals.currentUser },
+    function (err, appointments, users) {
+      console.log(appointments);
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("schedule", {
+          title: "Pets-R-Us: schedule",
+          cardTitle: "Book your appointment",
+          services: services,
+          appointments: appointments,
+          // userName:userName
+        });
+      }
     }
-  });
+  );
 });
 
 // check isLoggedIn
@@ -247,6 +250,7 @@ app.post("/schedule", isLoggedIn, (req, res, next) => {
 
   let schedule = new Appointment({
     // userName: username,
+    userName: res.locals.currentUser,
     firstName: firstName,
     lastName: lastName,
     email: email,
@@ -264,14 +268,17 @@ app.post("/schedule", isLoggedIn, (req, res, next) => {
 
 // find appointment data from json
 app.get("/api/appointments", isLoggedIn, async (req, res) => {
-  Appointment.find({}, function (err, appointments) {
-    console.log(appointments);
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(appointments);
+  Appointment.find(
+    { userName: res.locals.currentUser },
+    function (err, appointments) {
+      console.log(appointments);
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(appointments);
+      }
     }
-  });
+  );
 });
 
 // logged in user profile with appointments (still working on only showing logged in user's appointments)
@@ -294,33 +301,38 @@ app.get("/profile", isLoggedIn, async (req, res) => {
   //   }
   // });
 
-  let username = req.session.passport.user;
+  // let username = req.session.passport.user;
   let email = req.user.email;
-  res.locals.currentUser = username;
-  Appointment.findOne({ email: email }, function (err, appointments) {
-    if (err) {
-      console.log(err);
-    } else {
-      // res.json(appointments);
-      res.render("profile", {
-        title: "Pets-R-Us: profile",
-        cardTitle: "My Profile",
-        appointments: appointments,
-        email: email,
-        username: username,
-      });
+  // res.locals.currentUser = username;
+
+  Appointment.findOne(
+    { userName: res.locals.currentUser },
+    function (err, appointments) {
+      if (err) {
+        console.log(err);
+      } else {
+        // res.json(appointments);
+        res.render("profile", {
+          title: "Pets-R-Us: profile",
+          cardTitle: "My Profile",
+          // services: services,
+          appointments: appointments,
+          email: email,
+        });
+      }
+      console.log(email);
+      console.log(appointments);
     }
-    console.log(email);
-    console.log(appointments);
-  });
+  );
 });
 
 app.post("/profile", (req, res) => {
   const userProfile = {
-    username: currentUser.username,
+    userName: res.locals.currentUser,
     email: req.body.email,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
+    // services: services,
   };
   console.log(userProfile);
 });
